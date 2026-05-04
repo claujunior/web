@@ -2,10 +2,14 @@ export function renderHome() {
   const app = document.getElementById("app");
 
   app.innerHTML = `
+<div class="container"> 
+  <div class="login">
     <h1>Login</h1>
-    <input id="username" type="text" placeholder="Username" />
-    <input id="password" type="text" placeholder="Password" />
-    <button id="btn">Login</button>`
+    <input id="username" placeholder="Username">
+    <input id="password" placeholder="Password">
+    <button>Entrar</button>
+  </div>
+</div>`
     ;
 
 
