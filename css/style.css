@@ -3,6 +3,10 @@ body {
   font-family: Arial, sans-serif;
   background: black;
   color: white;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #app {
