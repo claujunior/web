@@ -7,7 +7,7 @@ export function renderHome() {
     <h1>Login</h1>
     <input id="username" placeholder="Username">
     <input id="password" placeholder="Password">
-    <button>Entrar</button>
+    <button id="btn">Entrar</button>
   </div>
 </div>`
     ;
@@ -28,7 +28,28 @@ export function renderHome() {
   document
     .getElementById("btn")
     .addEventListener("click", () => {
-      console.log(username1.value,password1.value);
+      outrapagina();
     });
+}
+export function outrapagina() {
+  const app = document.getElementById("app");
+
+  app.innerHTML = `
+<header class="navbar">
+  <div class="logo">
+    <span class="logo-red">Web</span>animes
+  </div>
+
+  <nav class="menu">
+    <a href="#animes" onclick="mostrarAnimes()">Animes</a>
+    <a href="#filmes" onclick="mostrarFilmes()">Filmes</a>
+    <a href="#pedir-anime" onclick="mostrarPedirAnime()">Pedir Anime</a>
+  </nav>
+
+  <div class="search">
+    <input type="text" placeholder="Search...">
+  </div>
+</header>`
+    ;
 }
    

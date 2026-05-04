@@ -1,10 +1,10 @@
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: black;
   color: white;
   
-  display: flex;
   justify-content: center;
   align-items: center;
 }
@@ -49,4 +49,50 @@ body {
   color: black; 
   margin: auto;
   margin-bottom: 30px;
+}
+.navbar {
+   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  
+  background: #0d0d0d;
+  border-bottom: 1px solid #222;
+}
+
+/* LOGO */
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.logo-red {
+  color: red;
+}
+
+/* MENU */
+.menu {
+  display: flex;
+  gap: 20px;
+}
+
+.menu a {
+  color: #ccc;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.menu a:hover {
+  color: white;
+}
+
+/* SEARCH */
+.search input {
+  padding: 6px 10px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  background: #222;
+  color: white;
 }
