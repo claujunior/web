@@ -1,3 +1,19 @@
-import { renderHome } from './ui.js';
+import { outrapagina, renderHome } from './ui.js';
 
-renderHome();
+
+function router() {
+    const path = window.location.hash;
+    
+    if (path === '#login') {
+        renderHome();
+    }
+    else if (path === '#dashboard') {
+        outrapagina();
+    }
+
+}
+
+router();
+
+window.addEventListener('hashchange', router);
+

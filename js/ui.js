@@ -44,6 +44,8 @@ export function outrapagina() {
     <a href="#animes" onclick="mostrarAnimes()">Animes</a>
     <a href="#filmes" onclick="mostrarFilmes()">Filmes</a>
     <a href="#pedir-anime" onclick="mostrarPedirAnime()">Pedir Anime</a>
+    <a href="#login" id="login">Login</a>
+    <a href="#cadastro" onclick="mostrarCadastro()">Cadastro</a>
   </nav>
 
   <div class="search">
@@ -51,5 +53,8 @@ export function outrapagina() {
   </div>
 </header>`
     ;
+
+  document.getElementById("login").onclick("click", () => {
+    window.location.hash = "#login";
+  });
 }
-   
