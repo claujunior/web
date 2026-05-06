@@ -1,17 +1,17 @@
-import { outrapagina, renderHome } from './ui.js';
+import { cadastro, login, paginaPrincipal,} from './ui.js';
 
 
 function router() {
     const path = window.location.hash;
     
     if (path === '#login') {
-        renderHome();
+        login();
     }
     else if (path === '#dashboard') {
-        outrapagina();
+        paginaPrincipal();
     }
-    else {
-        outrapagina();
+    else if(path === '#cadastro'){
+        cadastro();
     }
 
 }

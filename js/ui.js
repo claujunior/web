@@ -1,4 +1,4 @@
-export function renderHome() {
+export function login() {
   const app = document.getElementById("app");
 
   app.innerHTML = `
@@ -31,7 +31,7 @@ export function renderHome() {
     window.location.hash = "#dashboard";
   });
 }
-export function outrapagina() {
+export function paginaPrincipal() {
   const app = document.getElementById("app");
 
   app.innerHTML = `
@@ -58,5 +58,44 @@ export function outrapagina() {
   .getElementById("login")
   .addEventListener("click", () => {
     window.location.hash = "#login";
+  });
+}
+export function cadastro() {
+  const app = document.getElementById("app");
+
+  app.innerHTML = `
+<div class="container"> 
+  <div class="login">
+    <h1>Cadastro</h1>
+    <input id="username" placeholder="Username">
+    <input id="password" placeholder="Password">
+    <input id="passwordReply" placeholder="Password">
+    <button id="btn">Cadastrar</button>
+  </div>
+</div>`
+    ;
+
+
+     const username1 = document
+    .getElementById("username")
+    username1.addEventListener("input", () => {
+    console.log(username1.value);
+  });
+
+  const password1 = document.getElementById("password");
+const password2 = document.getElementById("passwordReply");
+
+password2.addEventListener("input", () => {
+  if (password1.value !== password2.value) {
+    console.log("Senhas diferentes");
+  } else {
+    console.log("Senhas iguais");
+  }
+});
+
+  document
+  .getElementById("btn")
+  .addEventListener("click", () => {
+    window.location.hash = "#dashboard";
   });
 }
