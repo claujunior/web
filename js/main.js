@@ -10,6 +10,9 @@ function router() {
     else if (path === '#dashboard') {
         outrapagina();
     }
+    else {
+        outrapagina();
+    }
 
 }
 

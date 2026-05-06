@@ -26,10 +26,10 @@ export function renderHome() {
   });
 
   document
-    .getElementById("btn")
-    .addEventListener("click", () => {
-      outrapagina();
-    });
+  .getElementById("btn")
+  .addEventListener("click", () => {
+    window.location.hash = "#dashboard";
+  });
 }
 export function outrapagina() {
   const app = document.getElementById("app");
@@ -54,7 +54,9 @@ export function outrapagina() {
 </header>`
     ;
 
-  document.getElementById("login").onclick("click", () => {
+  document
+  .getElementById("login")
+  .addEventListener("click", () => {
     window.location.hash = "#login";
   });
 }
