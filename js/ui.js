@@ -37,7 +37,7 @@ export function outrapagina() {
   app.innerHTML = `
 <header class="navbar">
   <div class="logo">
-    <span class="logo-red">Web</span>animes
+    <span class="logo-red">Ani</span>lib
   </div>
 
   <nav class="menu">
