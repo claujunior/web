@@ -13,6 +13,9 @@ function router() {
     else if(path === '#cadastro'){
         cadastro();
     }
+    else {
+        paginaPrincipal();
+    }
 
 }
 

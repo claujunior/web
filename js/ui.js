@@ -65,7 +65,7 @@ export function cadastro() {
 
   app.innerHTML = `
 <div class="container"> 
-  <div class="login">
+  <div class="cadastro">
     <h1>Cadastro</h1>
     <input id="username" placeholder="Username">
     <input id="password" placeholder="Password">

@@ -59,11 +59,12 @@ body {
   margin: auto;
   margin-bottom: 30px;
 }
-
-.login input:focus {
-  border: 1px solid #555;
-  outline: none;
+.login button{
+  width: 30%;
+  margin: auto;
+  border-radius: 8px;
 }
+
 
 
 .navbar {
@@ -92,6 +93,7 @@ body {
   
 }
 
+
 /* MENU */
 .menu {
   display: flex;
@@ -119,6 +121,48 @@ body {
   background: #222;
   color: white;
   
-   
 }
 
+.cadastro {
+  display: flex;
+  flex-direction: column;
+  
+  background: #111;
+  border: 1px solid #222;
+  padding: 1rem;
+  height: 20rem;
+  width: 20rem;
+  margin: auto;
+  margin-top: 20rem;
+  outline: none;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.cadastro input{
+  padding: 12px;
+  margin: auto;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 16px;
+
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  color: #fff;
+}
+
+.cadastro h1{
+  display: flex;
+  justify-content: center;
+  
+}
+
+.cadastro button {
+  width: 30%;
+  margin: auto;
+  border-radius: 8px;
+}
+.cadastro h1 {
+  color: #fff; 
+  margin: auto;
+}
