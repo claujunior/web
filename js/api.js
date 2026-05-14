@@ -35,3 +35,15 @@ export async function login(username, password) {
     }
     return await response.json()
   };
+
+ export async function mostrarAnimes1(page = 1) {
+
+  const response = await fetch(
+    `https://api.jikan.moe/v4/top/anime?page=${page}&limit=12`
+  );
+  if(!response.ok){
+        throw new Error("Error")
+    }
+  const data = await response.json();
+  return data.data;
+}

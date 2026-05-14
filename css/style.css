@@ -160,3 +160,40 @@ body {
   color: #fff; 
   margin: auto;
 }
+.animes{
+  display:grid;
+  grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
+  gap:20px;
+}
+
+.card{
+  background:#1c1c1c;
+  border-radius:12px;
+  overflow:hidden;
+
+  transition:0.2s;
+
+  cursor:pointer;
+}
+
+.card:hover{
+  transform:scale(1.03);
+}
+
+.card img{
+  width:100%;
+  height:320px;
+
+  object-fit:cover;
+
+  display:block;
+}
+
+.card h3{
+  padding:12px;
+
+  font-size:16px;
+  color:white;
+
+  text-align:center;
+}

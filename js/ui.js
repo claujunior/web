@@ -1,4 +1,4 @@
-import { login, cadastroapi } from "./api.js";
+import { login, cadastroapi,mostrarAnimes1 } from "./api.js";
 
 export function login1() {
   const app = document.getElementById("app");
@@ -30,9 +30,16 @@ export function login1() {
     }
   });
 }
-export function paginaPrincipal() {
+export  async function paginaPrincipal(page = 1) {
   const logado = localStorage.getItem("token");
   const app = document.getElementById("app");
+  let animes = [];
+  
+  try {
+    animes = await mostrarAnimes1(page);
+  } catch (err) {
+    console.log(err);
+  }
 
   app.innerHTML = `
 <header class="navbar">
@@ -52,7 +59,23 @@ export function paginaPrincipal() {
   <div class="search">
     <input type="text" placeholder="Search...">
   </div>
-</header>`;
+</header>
+
+<main id="conteudo">
+  <div class="animes">
+    ${animes.map(anime => `
+      <div class="card">
+        <img src="${anime.images.jpg.image_url}">
+        <h3>${anime.title}</h3>
+      </div>
+    `).join("")}
+  </div>
+
+  <div class="paginacao">
+    <button id="prev">Anterior</button>
+    <button id="next">Próxima</button>
+  </div>
+</main>`;
 
   const loginBtn = document.getElementById("login");
   if (loginBtn) {
@@ -68,6 +91,20 @@ export function paginaPrincipal() {
       window.location.hash = "#login";
     });
   }
+  document.getElementById("next")
+  .addEventListener("click",()=>{
+    paginaPrincipal(page + 1)
+  })
+  document.getElementById("prev")
+  .addEventListener("click",()=>{
+    if(page===1){
+
+    }
+    else{
+      paginaPrincipal(page - 1)
+    }
+  })
+  
 }
 export function cadastro() {
   const app = document.getElementById("app");
@@ -85,8 +122,6 @@ export function cadastro() {
 `;
 
   const form = document.getElementById("cadastro");
-  const password1 = document.getElementById("password");
-  const password2 = document.getElementById("passwordReply");
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
