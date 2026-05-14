@@ -1,199 +1,237 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-*{
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap');
+
+*, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+:root {
+  --accent: #e05c7a;
+  --bg: #0d0d0d;
+  --surface: #111;
+  --surface-2: #1a1a1a;
+  --border: #1e1e1e;
+  --border-2: #2a2a2a;
+  --text-primary: #fff;
+  --text-secondary: #888;
+  --text-muted: #555;
+}
 
 body {
-  background-color: #0d0d0d;
-  width: 100%;
-  height: 100vh;
+  background-color: var(--bg);
   font-family: "Inter", sans-serif;
+  color: var(--text-primary);
+  min-height: 100vh;
 }
 
-
-.login {
-  
-  display: flex;
-  flex-direction: column;
-  
-  
-
-  background: #111;
-  border: 1px solid #222;
-  padding: 3rem;
-  height: 20rem;
-  width: 20rem;
-  margin: auto;
-  margin-top: 20rem;
-  outline: none;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-
-}
-
-.login input{
-  padding: 12px;
-    margin: 0 auto;
-  border-radius: 8px;
-  font-size: 14px;
-  margin-bottom: 16px;
-
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
-  color: #fff;
-}
-
-.login h1 {
-  color: #fff; 
-  margin: auto;
-  margin-bottom: 30px;
-}
-.login button{
-  width: 30%;
-  margin: auto;
-  border-radius: 8px;
-}
-
-
+/* ─── NAVBAR ──────────────────────────────── */
 
 .navbar {
   width: 100%;
-  height: 5vh;
-  
+  height: 56px;
   display: flex;
-  background: #0d0d0d;
-  border-bottom: 1px solid #222;
   align-items: center;
-  justify-content: space-between; /* horizontal */
+  justify-content: space-between;
   padding: 0 2rem;
+  background: rgba(13, 13, 13, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-/* LOGO */
 .logo {
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text-muted);
 }
 
 .logo-red {
-  color: #ddd8d9;
-}
-.logo{
-  color: #807073;
-  
+  color: var(--accent);
 }
 
-
-/* MENU */
 .menu {
   display: flex;
-  gap: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  
-
+  gap: 24px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .menu a {
-  color: #ccc;
+  color: var(--text-secondary);
   text-decoration: none;
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: color 0.2s;
   cursor: pointer;
 }
 
 .menu a:hover {
-  color: white;
+  color: var(--text-primary);
 }
 
 .search input {
-  padding: 6px 10px;
-  border-radius: 5px;
-  border: none;
+  padding: 7px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-2);
   outline: none;
-  background: #222;
-  color: white;
-  
+  background: var(--surface-2);
+  color: var(--text-primary);
+  font-size: 13px;
+  width: 180px;
+  transition: border-color 0.2s;
 }
 
+.search input:focus {
+  border-color: #444;
+}
+
+/* ─── LOGIN / CADASTRO ────────────────────── */
+
+.login,
 .cadastro {
   display: flex;
   flex-direction: column;
-  
-  background: #111;
-  border: 1px solid #222;
-  padding: 1rem;
-  height: 20rem;
-  width: 20rem;
-  margin: auto;
-  margin-top: 20rem;
-  outline: none;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2.5rem 2rem;
+  width: 22rem;
+  margin: 6rem auto 0;
+  gap: 12px;
 }
 
-.cadastro input{
-  padding: 12px;
-  margin: auto;
-  border-radius: 8px;
-  font-size: 14px;
-  margin-bottom: 16px;
+.login h1,
+.cadastro h1 {
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 8px;
+}
 
-  background: #1a1a1a;
+.login input,
+.cadastro input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-2);
+  background: var(--surface-2);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.login input:focus,
+.cadastro input:focus {
+  border-color: rgba(224, 92, 122, 0.4);
+  box-shadow: 0 0 0 3px rgba(224, 92, 122, 0.08);
+}
+
+.login button,
+.cadastro button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  margin-top: 4px;
+}
+
+.login button:hover,
+.cadastro button:hover {
+  opacity: 0.85;
+}
+
+.login button:active,
+.cadastro button:active {
+  transform: scale(0.97);
+}
+
+/* ─── CARDS ───────────────────────────────── */
+
+.animes {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1rem;
+}
+
+.card {
+  background: #161616;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.03);
+  border-color: #2a2a2a;
+}
+
+.card img {
+  width: 100%;
+  height: 20rem;
+  object-fit: cover;
+  display: block;
+}
+
+.card h3 {
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #ccc;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* ─── PAGINAÇÃO ───────────────────────────── */
+.paginacao{
+  
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 1rem;
+
+}
+#prev,
+#next {
+  padding: 10px 28px;
+  border-radius: 10px;
   border: 1px solid #2a2a2a;
+  background: #111;
+  color: #aaa;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: "Inter", sans-serif;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+#prev:hover,
+#next:hover {
+  background: #1a1a1a;
+  border-color: #444;
   color: #fff;
 }
 
-.cadastro h1{
-  display: flex;
-  justify-content: center;
-  
-}
-
-.cadastro button {
-  width: 30%;
-  margin: auto;
-  border-radius: 8px;
-}
-.cadastro h1 {
-  color: #fff; 
-  margin: auto;
-}
-.animes{
-  display:grid;
-  grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
-  gap:20px;
-}
-
-.card{
-  background:#1c1c1c;
-  border-radius:12px;
-  overflow:hidden;
-
-  transition:0.2s;
-
-  cursor:pointer;
-}
-
-.card:hover{
-  transform:scale(1.03);
-}
-
-.card img{
-  width:100%;
-  height:320px;
-
-  object-fit:cover;
-
-  display:block;
-}
-
-.card h3{
-  padding:12px;
-
-  font-size:16px;
-  color:white;
-
-  text-align:center;
+#prev:active,
+#next:active {
+  transform: scale(0.96);
 }

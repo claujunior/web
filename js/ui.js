@@ -62,6 +62,7 @@ export  async function paginaPrincipal(page = 1) {
 </header>
 
 <main id="conteudo">
+<h1 id="recentes">Animes recentes:</h1>
   <div class="animes">
     ${animes.map(anime => `
       <div class="card">
