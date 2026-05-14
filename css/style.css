@@ -14,14 +14,6 @@ body {
 }
 
 
-
-
-.container {
-  
-
-}
-
-
 .login {
   
   display: flex;
@@ -100,6 +92,7 @@ body {
   gap: 20px;
   margin-left: auto;
   margin-right: auto;
+  
 
 }
 
@@ -107,6 +100,7 @@ body {
   color: #ccc;
   text-decoration: none;
   font-size: 14px;
+  cursor: pointer;
 }
 
 .menu a:hover {

@@ -1,11 +1,11 @@
-import { cadastro, login, paginaPrincipal,} from './ui.js';
+import { cadastro, login1, paginaPrincipal,} from './ui.js';
 
 
 function router() {
     const path = window.location.hash;
     
     if (path === '#login') {
-        login();
+        login1();
     }
     else if (path === '#dashboard') {
         paginaPrincipal();
