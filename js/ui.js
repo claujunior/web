@@ -1,4 +1,4 @@
-import { login } from "./api.js";
+import { login, cadastroapi } from "./api.js";
 
 export function login1() {
   const app = document.getElementById("app");
@@ -73,33 +73,38 @@ export function cadastro() {
   const app = document.getElementById("app");
 
   app.innerHTML = `
-<div class="container"> 
-  <div class="cadastro">
+ 
+  <form id="cadastro" class="cadastro">
     <h1>Cadastro</h1>
-    <input id="username" placeholder="Username">
-    <input id="password" placeholder="Password">
-    <input id="passwordReply" placeholder="Password">
-    <button id="btn">Cadastrar</button>
-  </div>
-</div>`;
+    <input type=text id="username" placeholder="Username">
+    <input type=password id="password" placeholder="Password">
+    <input type=password id="passwordReply" placeholder="Password">
+    <button type=submit id="btn">Cadastrar</button>
+    <p id="alerta"></p>
+  </form>
+`;
 
-  const username1 = document.getElementById("username");
-  username1.addEventListener("input", () => {
-    console.log(username1.value);
-  });
-
+  const form = document.getElementById("cadastro");
   const password1 = document.getElementById("password");
   const password2 = document.getElementById("passwordReply");
 
-  password2.addEventListener("input", () => {
-    if (password1.value !== password2.value) {
-      console.log("Senhas diferentes");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const username = document.getElementById("username").value;
+    const alerta = document.getElementById("alerta");
+    const password1 = document.getElementById("password").value;
+    const password2 = document.getElementById("passwordReply").value;
+    if (password1 !== password2) {
+      alerta.textContent = "Senhas diferentes";
     } else {
-      console.log("Senhas iguais");
+      try {
+      const data = await cadastroapi(username, password2);
+      console.log(data);
+      alert("Cadastro feito.");
+      window.location.hash = "#dashboard";
+      } catch(err) {
+        alerta.textContent=err.message
+      }
     }
-  });
-
-  document.getElementById("btn").addEventListener("click", () => {
-    window.location.hash = "#dashboard";
   });
 }
