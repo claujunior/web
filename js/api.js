@@ -39,11 +39,12 @@ export async function login(username, password) {
  export async function mostrarAnimes1(page = 1) {
 
   const response = await fetch(
-    `https://api.jikan.moe/v4/top/anime?page=${page}&limit=7`
+    API_URL+`/anime?page=${page}`
   );
   if(!response.ok){
         throw new Error("Error")
     }
-  const data = await response.json();
-  return data.data;
+    const data = await response.json();
+    const body = JSON.parse(data.body);
+    return body.data;
 }

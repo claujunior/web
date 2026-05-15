@@ -66,8 +66,8 @@ export  async function paginaPrincipal(page = 1) {
   <div class="animes">
     ${animes.map(anime => `
       <div class="card">
-        <img src="${anime.images.jpg.image_url}">
-        <h3>${anime.title}</h3>
+        <img src="${anime.node.main_picture.medium}">
+        <h3>${anime.node.title}</h3>
       </div>
     `).join("")}
   </div>
