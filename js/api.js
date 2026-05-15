@@ -45,6 +45,6 @@ export async function login(username, password) {
         throw new Error("Error")
     }
     const data = await response.json();
-    const body = JSON.parse(data.body);
-    return body.data;
+   
+    return data.data;
 }
