@@ -1,4 +1,4 @@
-import { login, cadastroapi,mostrarAnimes1 } from "./api.js";
+import { login, cadastroapi, mostrarAnimes1, searchAnimes } from "./api.js";
 
 export function login1() {
   const app = document.getElementById("app");
@@ -30,11 +30,11 @@ export function login1() {
     }
   });
 }
-export  async function paginaPrincipal(page = 1) {
+export async function paginaPrincipal(page = 1) {
   const logado = localStorage.getItem("token");
   const app = document.getElementById("app");
   let animes = [];
-  
+
   try {
     animes = await mostrarAnimes1(page);
   } catch (err) {
@@ -57,19 +57,24 @@ export  async function paginaPrincipal(page = 1) {
   </nav>
 
   <div class="search">
-    <input type="text" placeholder="Search...">
+    <input id="search" type="text" placeholder="Search...">
+    <div id="results"></div>
   </div>
 </header>
 
 <main id="conteudo">
 <h1 id="recentes">Animes recentes:</h1>
   <div class="animes">
-    ${animes.map(anime => `
+    ${animes
+      .map(
+        (anime) => `
       <div class="card">
         <img src="${anime.node.main_picture.medium}">
         <h3>${anime.node.title}</h3>
       </div>
-    `).join("")}
+    `,
+      )
+      .join("")}
   </div>
 
   <div class="paginacao">
@@ -92,20 +97,37 @@ export  async function paginaPrincipal(page = 1) {
       window.location.hash = "#login";
     });
   }
-  document.getElementById("next")
-  .addEventListener("click",()=>{
-    paginaPrincipal(page + 1)
-  })
-  document.getElementById("prev")
-  .addEventListener("click",()=>{
-    if(page===1){
+  document.getElementById("next").addEventListener("click", () => {
+    paginaPrincipal(page + 1);
+  });
+  document.getElementById("prev").addEventListener("click", () => {
+    if (page === 1) {
+    } else {
+      paginaPrincipal(page - 1);
+    }
+  });
 
+  const pesquisa = document.getElementById("search");
+  const resultados = document.getElementById("results");
+  pesquisa.addEventListener("input", async () => {
+    if (pesquisa.value.length>2) {
+      try {
+        const data = await searchAnimes(pesquisa.value);
+        resultados.innerHTML = data
+          .map((anime) => {
+            return `
+           <img src="${anime.node.main_picture.medium}">
+           <h3>${anime.node.title}</h3>
+        `;
+          })
+          .join("");
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+       resultados.innerHTML = "";
     }
-    else{
-      paginaPrincipal(page - 1)
-    }
-  })
-  
+  });
 }
 export function cadastro() {
   const app = document.getElementById("app");
@@ -134,12 +156,12 @@ export function cadastro() {
       alerta.textContent = "Senhas diferentes";
     } else {
       try {
-      const data = await cadastroapi(username, password2);
-      console.log(data);
-      alert("Cadastro feito.");
-      window.location.hash = "#dashboard";
-      } catch(err) {
-        alerta.textContent=err.message
+        const data = await cadastroapi(username, password2);
+        console.log(data);
+        alert("Cadastro feito.");
+        window.location.hash = "#dashboard";
+      } catch (err) {
+        alerta.textContent = err.message;
       }
     }
   });

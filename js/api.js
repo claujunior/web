@@ -48,3 +48,14 @@ export async function login(username, password) {
    
     return data.data;
 }
+export async function searchAnimes(pesquisa) {
+    const response = await fetch(
+        API_URL+`/anime/search?search=${pesquisa}`
+    );
+    if(!response.ok){
+        throw new Error("Error")
+    }
+    const data = await response.json();
+    console.log(data)
+    return data.data;
+}
