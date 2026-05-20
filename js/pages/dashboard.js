@@ -1,0 +1,99 @@
+import { mostrarAnimes1, searchAnimes } from "../api/animes.js";
+
+export async function paginaPrincipal(page = 1) {
+  const logado = localStorage.getItem("token");
+  const app = document.getElementById("app");
+  let animes = [];
+
+  try {
+    animes = await mostrarAnimes1(page);
+  } catch (err) {
+    console.log(err);
+  }
+
+  app.innerHTML = `
+<header class="navbar">
+  <div class="logo">
+    <span class="logo-red">Ani</span>lib
+  </div>
+
+  <nav class="menu">
+    <a href="#animes" onclick="mostrarAnimes()">Animes</a>
+    <a href="#filmes" onclick="mostrarFilmes()">Filmes</a>
+    <a href="#pedir-anime" onclick="mostrarPedirAnime()">Pedir Anime</a>
+    ${!logado ? `<a href="#login" id="login">Login</a>` : ""}
+    ${!logado ? `<a href="#cadastro">Cadastro</a>` : ""}
+    ${logado ? `<a id="logout">Logout</a>` : ""}
+  </nav>
+
+  <div class="search">
+    <input id="search" type="text" placeholder="Search...">
+    <div id="results"></div>
+  </div>
+</header>
+
+<main id="conteudo">
+<h1 id="recentes">Animes recentes:</h1>
+  <div class="animes">
+    ${(Array.isArray(animes) ? animes : [])
+      .map(
+        (anime) => `
+      <div class="card">
+        ${anime.node.main_picture?.medium ? `<img src="${anime.node.main_picture.medium}">` : ''}
+        <h3>${anime.node.title}</h3>
+      </div>
+    `,
+      )
+      .join("")}
+  </div>
+
+  <div class="paginacao">
+    <button id="prev">Anterior</button>
+    <button id="next">Próxima</button>
+  </div>
+</main>`;
+
+  const loginBtn = document.getElementById("login");
+  if (loginBtn) {
+    loginBtn.addEventListener("click", () => {
+      window.location.hash = "#login";
+    });
+  }
+
+  const logoutBtn = document.getElementById("logout");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("token");
+      window.location.hash = "#login";
+    });
+  }
+
+  document.getElementById("next").addEventListener("click", () => {
+    paginaPrincipal(page + 1);
+  });
+  document.getElementById("prev").addEventListener("click", () => {
+    if (page > 1) paginaPrincipal(page - 1);
+  });
+
+  const pesquisa = document.getElementById("search");
+  const resultados = document.getElementById("results");
+  pesquisa.addEventListener("input", async () => {
+    if (pesquisa.value.length > 2) {
+      try {
+        const data = await searchAnimes(pesquisa.value);
+        resultados.innerHTML = data
+          .map((anime) => `
+            <div class="anime-item">
+              <img src="${anime.node.main_picture.medium}">
+              <h3>${anime.node.title}</h3>
+            </div>
+          `)
+          .join("");
+      } catch (err) {
+        resultados.innerHTML = "";
+      }
+    } else {
+      resultados.innerHTML = "";
+    }
+  });
+}
