@@ -15,3 +15,10 @@ export async function searchAnimes(pesquisa) {
     const data = await response.json();
     return data.data;
 }
+export async function searchId(id) {
+    const response = await fetch(`${API_URL}/anime/${id}`);
+
+    if (!response.ok) throw new Error("Erro ao buscar animes");
+    const data = await response.json();
+    return data.data;
+}

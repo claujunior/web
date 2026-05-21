@@ -38,10 +38,10 @@ export async function paginaPrincipal(page = 1) {
     ${(Array.isArray(animes) ? animes : [])
       .map(
         (anime) => `
-      <div class="card">
+      <a href="#anime/${anime.node.id}" class="card">
         ${anime.node.main_picture?.medium ? `<img src="${anime.node.main_picture.medium}">` : ''}
         <h3>${anime.node.title}</h3>
-      </div>
+      </a>
     `,
       )
       .join("")}
