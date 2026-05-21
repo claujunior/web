@@ -20,5 +20,5 @@ export async function searchId(id) {
 
     if (!response.ok) throw new Error("Erro ao buscar animes");
     const data = await response.json();
-    return data.data;
+    return data;
 }

@@ -1,7 +1,7 @@
 import { loginPage } from "./pages/login.js";
 import { paginaPrincipal } from "./pages/dashboard.js";
 import { cadastro } from "./pages/cadastro.js";
-
+import { paginaAnime } from "./pages/paginaAnime.js";
 function router() {
   const path = window.location.hash;
 
@@ -12,7 +12,7 @@ function router() {
   } else if (path === "#cadastro") {
     cadastro();
   } else if (path.startsWith("#anime/")) {
-    const animeId = path.split("/")[1]; // pega o ID do #anime/1234
+    const animeId = path.split("/")[1]; 
     paginaAnime(animeId);
   } else {
     paginaPrincipal();
