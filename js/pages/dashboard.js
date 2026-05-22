@@ -18,9 +18,9 @@ export async function paginaPrincipal(page = 1) {
   </div>
 
   <nav class="menu">
-    <a href="#animes" onclick="mostrarAnimes()">Animes</a>
-    <a href="#filmes" onclick="mostrarFilmes()">Filmes</a>
-    <a href="#pedir-anime" onclick="mostrarPedirAnime()">Pedir Anime</a>
+    <a href="#animes" >Animes</a>
+    <a href="#filmes" >Filmes</a>
+    <a href="#pedir-anime">Pedir Anime</a>
     ${!logado ? `<a href="#login" id="login">Login</a>` : ""}
     ${!logado ? `<a href="#cadastro">Cadastro</a>` : ""}
     ${logado ? `<a id="logout">Logout</a>` : ""}
