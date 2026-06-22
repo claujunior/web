@@ -539,3 +539,89 @@ body {
   }
 
 }
+
+/* ─── PERFIL / WATCHLIST ──────────────────── */
+
+.perfil, .watchlist {
+  padding: 2rem;
+}
+
+.mal-card {
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  border-radius: 12px;
+  padding: 1.2rem;
+  margin-top: 1rem;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  align-items: flex-start;
+}
+
+.mal-btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.mal-btn.ghost {
+  background: transparent;
+  border: 1px solid var(--border-2);
+  color: var(--text-secondary);
+}
+
+.mal-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.card .tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  margin: 0.3rem 0;
+}
+
+.card .remove {
+  width: 100%;
+  margin-top: 0.4rem;
+}
+
+.watchlist-box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  border-radius: 12px;
+}
+
+.watchlist-box h3 {
+  width: 100%;
+}
+
+.watchlist-box select,
+.watchlist-box input {
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  color: var(--text-primary);
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+.watchlist-box input {
+  width: 90px;
+}
+
+.watchlist-box #wl-msg {
+  color: var(--accent);
+  font-size: 0.85rem;
+}

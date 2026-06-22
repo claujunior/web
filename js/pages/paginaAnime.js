@@ -1,4 +1,59 @@
 import { searchId, searchAnimes } from "../api/animes.js";
+import { logout } from "../api/http.js";
+import { malStatus, updateList } from "../api/mal.js";
+
+const STATUS_OPTIONS = [
+  ["watching", "Assistindo"],
+  ["completed", "Completo"],
+  ["on_hold", "Em espera"],
+  ["dropped", "Abandonado"],
+  ["plan_to_watch", "Planejo assistir"],
+];
+
+async function montarWatchlist(animeId) {
+  const logado = localStorage.getItem("token");
+  if (!logado) return;
+
+  let conectado = false;
+  try {
+    conectado = (await malStatus()).connected;
+  } catch {
+    return;
+  }
+  if (!conectado) return;
+
+  const info = document.querySelector(".anime-info");
+  if (!info) return;
+
+  const box = document.createElement("div");
+  box.className = "watchlist-box";
+  box.innerHTML = `
+    <h3>Adicionar à lista</h3>
+    <select id="wl-status">
+      ${STATUS_OPTIONS.map(([v, l]) => `<option value="${v}">${l}</option>`).join("")}
+    </select>
+    <input id="wl-score" type="number" min="0" max="10" placeholder="Nota">
+    <input id="wl-eps" type="number" min="0" placeholder="Episódios">
+    <button id="wl-save" class="mal-btn">Salvar</button>
+    <span id="wl-msg"></span>`;
+  info.appendChild(box);
+
+  document.getElementById("wl-save").addEventListener("click", async () => {
+    const msg = document.getElementById("wl-msg");
+    const body = { status: document.getElementById("wl-status").value };
+    const score = document.getElementById("wl-score").value;
+    const eps = document.getElementById("wl-eps").value;
+    if (score) body.score = Number(score);
+    if (eps) body.num_watched_episodes = Number(eps);
+
+    try {
+      await updateList(animeId, body);
+      msg.textContent = "Salvo!";
+    } catch (err) {
+      msg.textContent = err.message;
+    }
+  });
+}
 export async function paginaAnime(animeId) {
   const logado = localStorage.getItem("token");
   const app = document.getElementById("app");
@@ -21,6 +76,7 @@ export async function paginaAnime(animeId) {
     <a href="#animes" >Animes</a>
     <a href="#filmes" >Filmes</a>
     <a href="#pedir-anime" >Pedir Anime</a>
+    ${logado ? `<a href="#perfil">Perfil</a>` : ""}
     ${!logado ? `<a href="#login" id="login">Login</a>` : ""}
     ${!logado ? `<a href="#cadastro">Cadastro</a>` : ""}
     ${logado ? `<a id="logout">Logout</a>` : ""}
@@ -41,10 +97,7 @@ export async function paginaAnime(animeId) {
 
   const logoutBtn = document.getElementById("logout");
   if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-      localStorage.removeItem("token");
-      window.location.hash = "#login";
-    });
+    logoutBtn.addEventListener("click", logout);
   }
   const pesquisa = document.getElementById("search");
   const resultados = document.getElementById("results");
@@ -57,7 +110,7 @@ export async function paginaAnime(animeId) {
             (anime) => `
             <a href="#anime/${anime.node.id}" class="anime-link">
               <div class="anime-item">
-                <img src="${anime.node.main_picture.medium}">
+                ${anime.node.main_picture?.medium ? `<img src="${anime.node.main_picture.medium}">` : ""}
                 <h3>${anime.node.title}</h3>
               </div>
               </a>
@@ -171,4 +224,6 @@ export async function paginaAnime(animeId) {
 </main>
   `;
   app.appendChild(content);
+
+  montarWatchlist(animeId);
 }

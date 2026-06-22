@@ -1,9 +1,15 @@
 import { mostrarAnimes1, searchAnimes } from "../api/animes.js";
+import { getUsers } from "../api/users.js";
+import { logout } from "../api/http.js";
 
 export async function paginaPrincipal(page = 1) {
   const logado = localStorage.getItem("token");
   const app = document.getElementById("app");
   let animes = [];
+
+  if (logado) {
+    getUsers().catch(() => {});
+  }
 
   try {
     animes = await mostrarAnimes1(page);
@@ -21,6 +27,7 @@ export async function paginaPrincipal(page = 1) {
     <a href="#animes" >Animes</a>
     <a href="#filmes" >Filmes</a>
     <a href="#pedir-anime">Pedir Anime</a>
+    ${logado ? `<a href="#perfil">Perfil</a>` : ""}
     ${!logado ? `<a href="#login" id="login">Login</a>` : ""}
     ${!logado ? `<a href="#cadastro">Cadastro</a>` : ""}
     ${logado ? `<a id="logout">Logout</a>` : ""}
@@ -62,10 +69,7 @@ export async function paginaPrincipal(page = 1) {
 
   const logoutBtn = document.getElementById("logout");
   if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-      localStorage.removeItem("token");
-      window.location.hash = "#login";
-    });
+    logoutBtn.addEventListener("click", logout);
   }
 
   document.getElementById("next").addEventListener("click", () => {
@@ -84,7 +88,7 @@ export async function paginaPrincipal(page = 1) {
         resultados.innerHTML = data
           .map((anime) => `
             <div class="anime-item">
-              <img src="${anime.node.main_picture.medium}">
+              ${anime.node.main_picture?.medium ? `<img src="${anime.node.main_picture.medium}">` : ""}
               <h3>${anime.node.title}</h3>
             </div>
           `)
