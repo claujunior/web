@@ -1,6 +1,54 @@
-import { searchId, searchAnimes } from "../api/animes.js";
+import { searchId, searchAnimes, getStream, streamProxyUrl } from "../api/animes.js";
 import { logout } from "../api/http.js";
 import { malStatus, updateList } from "../api/mal.js";
+
+function montarPlayer(animeId, numEpisodes) {
+  const info = document.querySelector(".anime-info");
+  if (!info) return;
+
+  const total = Number(numEpisodes) || 0;
+  if (!total) return; // anime ainda em exibição / sem contagem -> sem grade fixa
+
+  const box = document.createElement("div");
+  box.className = "player-box";
+  box.innerHTML = `
+    <h3>Assistir</h3>
+    <video id="anime-player" controls playsinline style="width:100%;max-width:900px;background:#000"></video>
+    <p id="player-msg"></p>
+    <div class="episodes-grid">
+      ${Array.from({ length: total }, (_, i) =>
+        `<button class="ep-btn" data-ep="${i + 1}">${i + 1}</button>`
+      ).join("")}
+    </div>`;
+  info.appendChild(box);
+
+  const player = box.querySelector("#anime-player");
+  const msg = box.querySelector("#player-msg");
+
+  box.querySelectorAll(".ep-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const ep = btn.dataset.ep;
+      box.querySelectorAll(".ep-btn").forEach((b) => b.classList.remove("ativo"));
+      btn.classList.add("ativo");
+      msg.textContent = `Carregando episódio ${ep}...`;
+
+      try {
+        const stream = await getStream(animeId, ep);
+        if (stream.type === "hls") {
+          msg.textContent =
+            "Este episódio é HLS (.m3u8) — precisa de hls.js para tocar no navegador.";
+          return;
+        }
+        // toca via proxy do backend (o host exige Referer; o navegador não pode forçá-lo)
+        player.src = streamProxyUrl(animeId, ep);
+        player.play().catch(() => {});
+        msg.textContent = `Episódio ${ep} · ${stream.resolution}p`;
+      } catch (err) {
+        msg.textContent = err.message;
+      }
+    });
+  });
+}
 
 const STATUS_OPTIONS = [
   ["watching", "Assistindo"],
@@ -225,5 +273,6 @@ export async function paginaAnime(animeId) {
   `;
   app.appendChild(content);
 
+  montarPlayer(animeId, anime.num_episodes);
   montarWatchlist(animeId);
 }

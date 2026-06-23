@@ -22,3 +22,17 @@ export async function searchId(id) {
     const data = await response.json();
     return data;
 }
+
+export async function getStream(animeId, episode, lang = "sub") {
+    const response = await fetch(
+        `${API_URL}/anime/${animeId}/episodes/${episode}/stream?lang=${lang}`
+    );
+
+    if (!response.ok) throw new Error("Não foi possível carregar este episódio");
+    return await response.json();
+}
+
+// URL do proxy de vídeo no backend (usada como src do <video>)
+export function streamProxyUrl(animeId, episode, lang = "sub") {
+    return `${API_URL}/anime/${animeId}/episodes/${episode}/video?lang=${lang}`;
+}
