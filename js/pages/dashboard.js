@@ -1,4 +1,4 @@
-import { mostrarAnimes1, searchAnimes,top10animes } from "../api/animes.js";
+import { mostrarAnimes1, searchAnimes, top10animes } from "../api/animes.js";
 import { getUsers } from "../api/users.js";
 import { logout } from "../api/http.js";
 
@@ -30,6 +30,8 @@ export async function paginaPrincipal(page = 1) {
 
   <nav class="menu">
     <a href="#animes" >Animes</a>
+    <a href="#filmes" >Filmes</a>
+    <a href="#pedir-anime">Pedir Anime</a>
     ${logado ? `<a href="#perfil">Perfil</a>` : ""}
     ${!logado ? `<a href="#login" id="login">Login</a>` : ""}
     ${!logado ? `<a href="#cadastro">Cadastro</a>` : ""}
@@ -97,25 +99,33 @@ export async function paginaPrincipal(page = 1) {
 
   const pesquisa = document.getElementById("search");
   const resultados = document.getElementById("results");
-  pesquisa.addEventListener("input", async () => {
-    if (pesquisa.value.length > 2) {
+  let buscaTimer;
+  let buscaSeq = 0;
+  pesquisa.addEventListener("input", () => {
+    clearTimeout(buscaTimer);
+    const termo = pesquisa.value;
+    if (termo.length <= 2) {
+      resultados.innerHTML = "";
+      return;
+    }
+    buscaTimer = setTimeout(async () => {
+      const seq = ++buscaSeq;
       try {
-        const data = await searchAnimes(pesquisa.value);
+        const data = await searchAnimes(termo);
+        if (seq !== buscaSeq) return; // resposta obsoleta -> ignora
         resultados.innerHTML = data
           .map((anime) => `
-           <a href="#anime/${anime.node.id}" class="anime-link">
+            <a href="#anime/${anime.node.id}" class="anime-link">
               <div class="anime-item">
                 ${anime.node.main_picture?.medium ? `<img src="${anime.node.main_picture.medium}">` : ""}
                 <h3>${anime.node.title}</h3>
               </div>
-              </a>
+            </a>
           `)
           .join("");
       } catch (err) {
-        resultados.innerHTML = "";
+        if (seq === buscaSeq) resultados.innerHTML = "";
       }
-    } else {
-      resultados.innerHTML = "";
-    }
+    }, 300);
   });
 }

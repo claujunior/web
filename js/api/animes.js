@@ -30,6 +30,15 @@ export async function searchId(id) {
     return data;
 }
 
+export async function getEpisodes(animeId, lang = "sub") {
+    const response = await fetch(
+        `${API_URL}/anime/${animeId}/episodes?lang=${lang}`
+    );
+
+    if (!response.ok) throw new Error("Não foi possível listar os episódios");
+    return await response.json();
+}
+
 export async function getStream(animeId, episode, lang = "sub") {
     const response = await fetch(
         `${API_URL}/anime/${animeId}/episodes/${episode}/stream?lang=${lang}`

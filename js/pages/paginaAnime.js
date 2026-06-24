@@ -1,53 +1,104 @@
-import { searchId, searchAnimes, getStream, streamProxyUrl } from "../api/animes.js";
+import { searchId, searchAnimes, getEpisodes, getStream, streamProxyUrl } from "../api/animes.js";
 import { logout } from "../api/http.js";
 import { malStatus, updateList } from "../api/mal.js";
 
-function montarPlayer(animeId, numEpisodes) {
+const CHUNK = 100; // episódios por faixa
+
+async function montarPlayer(animeId) {
   const info = document.querySelector(".anime-info");
   if (!info) return;
-
-  const total = Number(numEpisodes) || 0;
-  if (!total) return; // anime ainda em exibição / sem contagem -> sem grade fixa
 
   const box = document.createElement("div");
   box.className = "player-box";
   box.innerHTML = `
     <h3>Assistir</h3>
-    <video id="anime-player" controls playsinline style="width:100%;max-width:900px;background:#000"></video>
-    <p id="player-msg"></p>
-    <div class="episodes-grid">
-      ${Array.from({ length: total }, (_, i) =>
-        `<button class="ep-btn" data-ep="${i + 1}">${i + 1}</button>`
-      ).join("")}
-    </div>`;
+    <video id="anime-player" controls playsinline></video>
+    <p id="player-msg">Carregando episódios...</p>
+    <div class="ep-controls" hidden>
+      <label>Faixa: <select id="ep-range"></select></label>
+      <label>Ir para: <input id="ep-jump" type="number" min="1" placeholder="ep"></label>
+    </div>
+    <div class="episodes-grid" id="episodes-grid"></div>`;
   info.appendChild(box);
 
   const player = box.querySelector("#anime-player");
   const msg = box.querySelector("#player-msg");
+  const grid = box.querySelector("#episodes-grid");
+  const controls = box.querySelector(".ep-controls");
+  const rangeSel = box.querySelector("#ep-range");
+  const jump = box.querySelector("#ep-jump");
 
-  box.querySelectorAll(".ep-btn").forEach((btn) => {
-    btn.addEventListener("click", async () => {
-      const ep = btn.dataset.ep;
-      box.querySelectorAll(".ep-btn").forEach((b) => b.classList.remove("ativo"));
-      btn.classList.add("ativo");
-      msg.textContent = `Carregando episódio ${ep}...`;
+  let episodes = [];
+  try {
+    const data = await getEpisodes(animeId);
+    episodes = data.episodes || [];
+  } catch {
+    msg.textContent = "Não foi possível carregar os episódios (provedor indisponível).";
+    return;
+  }
+  if (!episodes.length) {
+    msg.textContent = "Nenhum episódio disponível neste provedor.";
+    return;
+  }
+  msg.textContent = "";
 
-      try {
-        const stream = await getStream(animeId, ep);
-        if (stream.type === "hls") {
-          msg.textContent =
-            "Este episódio é HLS (.m3u8) — precisa de hls.js para tocar no navegador.";
-          return;
-        }
-        // toca via proxy do backend (o host exige Referer; o navegador não pode forçá-lo)
-        player.src = streamProxyUrl(animeId, ep);
-        player.play().catch(() => {});
-        msg.textContent = `Episódio ${ep} · ${stream.resolution}p`;
-      } catch (err) {
-        msg.textContent = err.message;
+  async function tocar(ep) {
+    grid.querySelectorAll(".ep-btn").forEach((b) =>
+      b.classList.toggle("ativo", Number(b.dataset.ep) === ep)
+    );
+    msg.textContent = `Carregando episódio ${ep}...`;
+    try {
+      const stream = await getStream(animeId, ep);
+      if (stream.type === "hls") {
+        msg.textContent = "Este episódio é HLS (.m3u8) — ainda não suportado no player.";
+        return;
       }
+      player.src = streamProxyUrl(animeId, ep);
+      player.play().catch(() => {});
+      msg.textContent = `Episódio ${ep} · ${stream.resolution}p`;
+    } catch (err) {
+      msg.textContent = err.message;
+    }
+  }
+
+  function renderFaixa(start) {
+    const slice = episodes.slice(start, start + CHUNK);
+    grid.innerHTML = slice
+      .map((ep) => `<button class="ep-btn" data-ep="${ep}">${ep}</button>`)
+      .join("");
+    grid.querySelectorAll(".ep-btn").forEach((btn) =>
+      btn.addEventListener("click", () => tocar(Number(btn.dataset.ep)))
+    );
+  }
+
+  // muitos episódios -> mostra seletor de faixas + "ir para"
+  if (episodes.length > CHUNK) {
+    controls.hidden = false;
+    for (let i = 0; i < episodes.length; i += CHUNK) {
+      const fim = Math.min(i + CHUNK, episodes.length) - 1;
+      const opt = document.createElement("option");
+      opt.value = i;
+      opt.textContent = `${episodes[i]} – ${episodes[fim]}`;
+      rangeSel.appendChild(opt);
+    }
+    rangeSel.addEventListener("change", () => renderFaixa(Number(rangeSel.value)));
+    jump.max = episodes[episodes.length - 1];
+    jump.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter") return;
+      const n = Number(jump.value);
+      const idx = episodes.indexOf(n);
+      if (idx === -1) {
+        msg.textContent = `Episódio ${n} não disponível.`;
+        return;
+      }
+      const start = Math.floor(idx / CHUNK) * CHUNK;
+      rangeSel.value = start;
+      renderFaixa(start);
+      tocar(n);
     });
-  });
+  }
+
+  renderFaixa(0);
 }
 
 const STATUS_OPTIONS = [
@@ -147,10 +198,20 @@ export async function paginaAnime(animeId) {
   }
   const pesquisa = document.getElementById("search");
   const resultados = document.getElementById("results");
-  pesquisa.addEventListener("input", async () => {
-    if (pesquisa.value.length > 2) {
+  let buscaTimer;
+  let buscaSeq = 0;
+  pesquisa.addEventListener("input", () => {
+    clearTimeout(buscaTimer);
+    const termo = pesquisa.value;
+    if (termo.length <= 2) {
+      resultados.innerHTML = "";
+      return;
+    }
+    buscaTimer = setTimeout(async () => {
+      const seq = ++buscaSeq;
       try {
-        const data = await searchAnimes(pesquisa.value);
+        const data = await searchAnimes(termo);
+        if (seq !== buscaSeq) return; // resposta obsoleta -> ignora
         resultados.innerHTML = data
           .map(
             (anime) => `
@@ -164,11 +225,9 @@ export async function paginaAnime(animeId) {
           )
           .join("");
       } catch (err) {
-        resultados.innerHTML = "";
+        if (seq === buscaSeq) resultados.innerHTML = "";
       }
-    } else {
-      resultados.innerHTML = "";
-    }
+    }, 300);
   });
   
   const content = document.createElement("content");
@@ -271,6 +330,6 @@ export async function paginaAnime(animeId) {
   `;
   app.appendChild(content);
 
-  montarPlayer(animeId, anime.num_episodes);
+  montarPlayer(animeId);
   montarWatchlist(animeId);
 }
