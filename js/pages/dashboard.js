@@ -87,10 +87,12 @@ export async function paginaPrincipal(page = 1) {
         const data = await searchAnimes(pesquisa.value);
         resultados.innerHTML = data
           .map((anime) => `
-            <div class="anime-item">
-              ${anime.node.main_picture?.medium ? `<img src="${anime.node.main_picture.medium}">` : ""}
-              <h3>${anime.node.title}</h3>
-            </div>
+           <a href="#anime/${anime.node.id}" class="anime-link">
+              <div class="anime-item">
+                ${anime.node.main_picture?.medium ? `<img src="${anime.node.main_picture.medium}">` : ""}
+                <h3>${anime.node.title}</h3>
+              </div>
+              </a>
           `)
           .join("");
       } catch (err) {
