@@ -666,3 +666,43 @@ body {
   background: var(--accent);
   border-color: var(--accent);
 }
+
+/* ===== Controles de episódios (faixas / ir para) ===== */
+#anime-player {
+  width: 100%;
+  max-width: 900px;
+  background: #000;
+  border-radius: 10px;
+  display: block;
+}
+
+.ep-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin: 0.75rem 0;
+}
+
+.ep-controls label {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+}
+
+.ep-controls select,
+.ep-controls input {
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  color: var(--text-primary);
+  border-radius: 8px;
+  padding: 0.4rem 0.5rem;
+}
+
+.ep-controls input {
+  width: 90px;
+}
+
+/* o atributo hidden tem que vencer o display:flex acima */
+.ep-controls[hidden] {
+  display: none;
+}
