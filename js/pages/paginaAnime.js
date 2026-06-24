@@ -122,8 +122,6 @@ export async function paginaAnime(animeId) {
 
   <nav class="menu">
     <a href="#animes" >Animes</a>
-    <a href="#filmes" >Filmes</a>
-    <a href="#pedir-anime" >Pedir Anime</a>
     ${logado ? `<a href="#perfil">Perfil</a>` : ""}
     ${!logado ? `<a href="#login" id="login">Login</a>` : ""}
     ${!logado ? `<a href="#cadastro">Cadastro</a>` : ""}

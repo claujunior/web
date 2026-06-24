@@ -1,4 +1,4 @@
-import { mostrarAnimes1, searchAnimes } from "../api/animes.js";
+import { mostrarAnimes1, searchAnimes,top10animes } from "../api/animes.js";
 import { getUsers } from "../api/users.js";
 import { logout } from "../api/http.js";
 
@@ -6,7 +6,7 @@ export async function paginaPrincipal(page = 1) {
   const logado = localStorage.getItem("token");
   const app = document.getElementById("app");
   let animes = [];
-
+  let topanimes = [];
   if (logado) {
     getUsers().catch(() => {});
   }
@@ -15,6 +15,11 @@ export async function paginaPrincipal(page = 1) {
     animes = await mostrarAnimes1(page);
   } catch (err) {
     console.log(err);
+  }
+  try{
+    topanimes = await top10animes();
+  } catch(err){
+    console.log(err)
   }
 
   app.innerHTML = `
@@ -25,8 +30,6 @@ export async function paginaPrincipal(page = 1) {
 
   <nav class="menu">
     <a href="#animes" >Animes</a>
-    <a href="#filmes" >Filmes</a>
-    <a href="#pedir-anime">Pedir Anime</a>
     ${logado ? `<a href="#perfil">Perfil</a>` : ""}
     ${!logado ? `<a href="#login" id="login">Login</a>` : ""}
     ${!logado ? `<a href="#cadastro">Cadastro</a>` : ""}
@@ -57,6 +60,19 @@ export async function paginaPrincipal(page = 1) {
   <div class="paginacao">
     <button id="prev">Anterior</button>
     <button id="next">Próxima</button>
+  </div>
+  <h1 id="top">Top Animes:</h1>
+  <div class="animes">
+    ${(Array.isArray(topanimes) ? topanimes : [])
+      .map(
+        (topanime) => `
+      <a href="#anime/${topanime.node.id}" class="card">
+        ${topanime.node.main_picture?.medium ? `<img src="${topanime.node.main_picture.medium}">` : ''}
+        <h3>${topanime.node.title}</h3>
+      </a>
+    `,
+      )
+      .join("")}
   </div>
 </main>`;
 
