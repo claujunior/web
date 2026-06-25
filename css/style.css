@@ -397,8 +397,6 @@ a.card h3 {
   filter: brightness(0.4);
 }
 
-/* delay diferente para cada imagem */
-
 .anime-banner img:nth-child(1) {
   animation-delay: 0s;
 }
@@ -441,8 +439,6 @@ a.card h3 {
     opacity: 0;
   }
 }
-
-/* overlay escuro */
 
 .anime-banner::after {
   content: "";
