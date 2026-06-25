@@ -4,7 +4,11 @@ import { logout } from "../api/http.js";
 import { initNsfwToggle } from "../ui/nsfw.js";
 
 export async function paginaPrincipal(page = 1) {
-  const logado = localStorage.getItem("token");
+   const logado = document.cookie
+  .split("; ")
+  .find(row => row.startsWith("token="))
+  ?.split("=")[1];
+  
   const app = document.getElementById("app");
   let animes = [];
   let topanimes = [];

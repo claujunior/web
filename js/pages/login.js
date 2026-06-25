@@ -21,7 +21,7 @@ export function loginPage() {
     const alerta = document.getElementById("alerta");
     try {
       const data = await login(username, password);
-      localStorage.setItem("token", data.access_token);
+      document.cookie = `token=${data.access_token}; path=/; max-age=86400`;
       alert("login feito.");
       window.location.hash = "#dashboard";
     } catch (err) {

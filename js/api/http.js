@@ -1,12 +1,15 @@
 import { API_URL } from '../config.js';
 
 export function logout() {
-  localStorage.removeItem("token");
+  document.cookie = "token=; path=/; max-age=0";
   window.location.hash = "#login";
 }
 
 export async function authFetch(path, options = {}) {
-  const token = localStorage.getItem("token");
+   const token = document.cookie
+  .split("; ")
+  .find(row => row.startsWith("token="))
+  ?.split("=")[1];
 
   const response = await fetch(`${API_URL}${path}`, {
     ...options,

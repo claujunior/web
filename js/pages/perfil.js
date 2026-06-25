@@ -26,7 +26,11 @@ function nomeUsuario(token) {
 }
 
 export async function perfil() {
-  const token = localStorage.getItem("token");
+  const token = document.cookie
+  .split("; ")
+  .find(row => row.startsWith("token="))
+  ?.split("=")[1];
+  
   if (!token) {
     window.location.hash = "#login";
     return;

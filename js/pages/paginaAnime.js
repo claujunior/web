@@ -110,7 +110,11 @@ const STATUS_OPTIONS = [
 ];
 
 async function montarWatchlist(animeId) {
-  const logado = localStorage.getItem("token");
+  const logado = document.cookie
+  .split("; ")
+  .find(row => row.startsWith("token="))
+  ?.split("=")[1];
+
   if (!logado) return;
 
   let conectado = false;
@@ -154,7 +158,11 @@ async function montarWatchlist(animeId) {
   });
 }
 export async function paginaAnime(animeId) {
-  const logado = localStorage.getItem("token");
+   const logado = document.cookie
+  .split("; ")
+  .find(row => row.startsWith("token="))
+  ?.split("=")[1];
+  
   const app = document.getElementById("app");
   let anime = {};
   try {
