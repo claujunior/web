@@ -110,7 +110,7 @@ export async function paginaPrincipal(page = 1) {
       const seq = ++buscaSeq;
       try {
         const data = await searchAnimes(termo);
-        if (seq !== buscaSeq) return; // resposta obsoleta -> ignora
+        if (seq !== buscaSeq) return;
         resultados.innerHTML = data
           .map((anime) => `
             <a href="#anime/${anime.node.id}" class="anime-link">

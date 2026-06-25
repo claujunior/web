@@ -2,7 +2,7 @@ import { searchId, searchAnimes, getEpisodes, getStream, streamProxyUrl } from "
 import { logout } from "../api/http.js";
 import { malStatus, updateList } from "../api/mal.js";
 
-const CHUNK = 100; // episódios por faixa
+const CHUNK = 100;
 
 async function montarPlayer(animeId) {
   const info = document.querySelector(".anime-info");
@@ -71,7 +71,6 @@ async function montarPlayer(animeId) {
     );
   }
 
-  // muitos episódios -> mostra seletor de faixas + "ir para"
   if (episodes.length > CHUNK) {
     controls.hidden = false;
     for (let i = 0; i < episodes.length; i += CHUNK) {
@@ -211,7 +210,7 @@ export async function paginaAnime(animeId) {
       const seq = ++buscaSeq;
       try {
         const data = await searchAnimes(termo);
-        if (seq !== buscaSeq) return; // resposta obsoleta -> ignora
+        if (seq !== buscaSeq) return;
         resultados.innerHTML = data
           .map(
             (anime) => `
@@ -260,10 +259,10 @@ export async function paginaAnime(animeId) {
         <h1>${anime.title}</h1>
 
         <div class="anime-meta">
-          <span>⭐ ${anime.mean || "N/A"}</span>
-          <span>🏆 #${anime.rank || "N/A"}</span>
-          <span>🔥 #${anime.popularity || "N/A"}</span>
-          <span>📺 ${anime.status || "Unknown"}</span>
+          <span><span class="meta-label">Nota</span> ${anime.mean || "N/A"}</span>
+          <span><span class="meta-label">Rank</span> #${anime.rank || "N/A"}</span>
+          <span><span class="meta-label">Popularidade</span> #${anime.popularity || "N/A"}</span>
+          <span><span class="meta-label">Status</span> ${anime.status || "Unknown"}</span>
         </div>
 
         <div class="genres">

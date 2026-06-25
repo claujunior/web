@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&family=Outfit:wght@500;600;700;800&display=swap');
 
 *, *::before, *::after {
   margin: 0;
@@ -8,35 +8,51 @@
 
 :root {
   --accent: #e05c7a;
-  --bg: #0d0d0d;
-  --surface: #111;
-  --surface-2: #1a1a1a;
-  --border: #1e1e1e;
-  --border-2: #2a2a2a;
-  --text-primary: #fff;
-  --text-secondary: #888;
-  --text-muted: #555;
+  --accent-strong: #c2415f;
+  --accent-soft: rgba(224, 92, 122, 0.15);
+
+  --bg: #0a090d;
+  --surface: #131217;
+  --surface-2: #1a191f;
+  --surface-3: #232128;
+  --border: #211f26;
+  --border-2: #2f2b35;
+
+  --text-primary: #f1eff4;
+  --text-secondary: #9b95a6;
+  --text-muted: #635d6e;
+
+  --radius-sm: 3px;
+  --radius: 4px;
+  --radius-lg: 6px;
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 14px 40px rgba(0, 0, 0, 0.6);
+
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-display: "Outfit", "Inter", sans-serif;
 }
 
 body {
   background-color: var(--bg);
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-body);
   color: var(--text-primary);
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* ─── NAVBAR ──────────────────────────────── */
+/* NAVBAR */
 
 .navbar {
   width: 100%;
-  height: 56px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 2rem;
-  background: rgba(13, 13, 13, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(10, 9, 13, 0.85);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
@@ -44,10 +60,11 @@ body {
 }
 
 .logo {
-  font-size: 1.4rem;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
 }
 
 .logo-red {
@@ -56,7 +73,7 @@ body {
 
 .menu {
   display: flex;
-  gap: 24px;
+  gap: 6px;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -65,33 +82,21 @@ body {
 .menu a {
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 13px;
+  font-family: var(--font-display);
+  font-size: 15px;
   font-weight: 500;
-  transition: color 0.2s;
+  padding: 9px 18px;
+  border-radius: var(--radius);
+  transition: color 0.15s, background 0.15s;
   cursor: pointer;
 }
 
 .menu a:hover {
   color: var(--text-primary);
-}
-
-.search input {
-  padding: 7px 12px;
-  border-radius: 8px;
-  border: 1px solid var(--border-2);
-  outline: none;
   background: var(--surface-2);
-  color: var(--text-primary);
-  font-size: 13px;
-  width: 180px;
-  transition: border-color 0.2s;
 }
 
-.search input:focus {
-  border-color: #444;
-}
-
-/* ─── LOGIN / CADASTRO ────────────────────── */
+/* LOGIN / CADASTRO */
 
 .login,
 .cadastro {
@@ -99,7 +104,7 @@ body {
   flex-direction: column;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   padding: 2.5rem 2rem;
   width: 22rem;
   margin: 6rem auto 0;
@@ -108,9 +113,10 @@ body {
 
 .login h1,
 .cadastro h1 {
+  font-family: var(--font-display);
   color: var(--text-primary);
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1.2rem;
+  font-weight: 700;
   text-align: center;
   margin-bottom: 8px;
 }
@@ -118,50 +124,65 @@ body {
 .login input,
 .cadastro input {
   width: 100%;
-  padding: 10px 12px;
-  border-radius: 8px;
+  padding: 11px 12px;
+  border-radius: var(--radius);
   border: 1px solid var(--border-2);
   background: var(--surface-2);
   color: var(--text-primary);
   font-size: 14px;
-  font-family: inherit;
+  font-family: var(--font-body);
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.15s;
 }
 
 .login input:focus,
 .cadastro input:focus {
-  border-color: rgba(224, 92, 122, 0.4);
-  box-shadow: 0 0 0 3px rgba(224, 92, 122, 0.08);
+  border-color: var(--accent);
 }
 
 .login button,
 .cadastro button {
   width: 100%;
-  padding: 10px;
+  padding: 11px;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius);
   background: var(--accent);
   color: #fff;
   font-size: 14px;
   font-weight: 600;
-  font-family: inherit;
+  font-family: var(--font-display);
   cursor: pointer;
-  transition: opacity 0.2s, transform 0.15s;
+  transition: background 0.15s;
   margin-top: 4px;
 }
 
 .login button:hover,
 .cadastro button:hover {
-  opacity: 0.85;
+  background: var(--accent-strong);
 }
 
-.login button:active,
-.cadastro button:active {
-  transform: scale(0.97);
+/* CARDS */
+
+#conteudo {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 4rem;
 }
 
-/* ─── CARDS ───────────────────────────────── */
+#conteudo > h1 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin: 2.2rem 0 1.1rem;
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--accent);
+}
+
+#conteudo > h1:first-child {
+  margin-top: 0.5rem;
+}
 
 .animes {
   display: grid;
@@ -170,70 +191,96 @@ body {
 }
 
 .card {
-  background: #161616;
-  border-radius: 12px;
+  background: var(--surface);
+  border-radius: var(--radius);
   overflow: hidden;
   border: 1px solid var(--border);
   cursor: pointer;
-  transition: transform 0.2s, border-color 0.2s;
+  text-decoration: none;
+  transition: border-color 0.15s, background 0.15s;
 }
 
 .card:hover {
-  transform: scale(1.03);
-  border-color: #2a2a2a;
+  border-color: var(--border-2);
+  background: var(--surface-2);
 }
 
 .card img {
   width: 100%;
-  height: 20rem;
+  aspect-ratio: 3 / 4;
   object-fit: cover;
   display: block;
 }
 
 .card h3 {
-  padding: 0.75rem 1rem;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: #ccc;
-  text-align: center;
-  line-height: 1.4;
+  font-family: var(--font-display);
+  padding: 0.6rem 0.7rem 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: left;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-/* ─── PAGINAÇÃO ───────────────────────────── */
+a.card {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  overflow: visible;
+}
+
+a.card:hover {
+  background: transparent;
+}
+
+a.card img {
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  transition: border-color 0.15s;
+}
+
+a.card:hover img {
+  border-color: var(--accent);
+}
+
+a.card h3 {
+  padding: 0.5rem 0.1rem 0;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+}
+
+/* PAGINAÇÃO */
 .paginacao{
-  
   display: flex;
   justify-content: center;
   gap: 12px;
-  margin-top: 1rem;
-
+  margin-top: 1.75rem;
 }
 #prev,
 #next {
-  padding: 10px 28px;
-  border-radius: 10px;
-  border: 1px solid #2a2a2a;
-  background: #111;
-  color: #aaa;
-  font-size: 13px;
-  font-weight: 500;
-  font-family: "Inter", sans-serif;
+  padding: 11px 30px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-2);
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-display);
   cursor: pointer;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  transition: all 0.2s;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
 
 #prev:hover,
 #next:hover {
-  background: #1a1a1a;
-  border-color: #444;
-  color: #fff;
-}
-
-#prev:active,
-#next:active {
-  transform: scale(0.96);
+  background: var(--surface-2);
+  border-color: var(--accent);
+  color: var(--text-primary);
 }
 
 .search{
@@ -245,89 +292,86 @@ body {
 
 #search{
     width: 100%;
-
-    padding: 12px 14px;
-
-    border: none;
+    padding: 10px 14px 10px 38px;
+    border: 1px solid var(--border-2);
     outline: none;
-
-    border-radius: 12px;
-
-    background: #1b1b1b;
-
-    color: white;
-
+    border-radius: var(--radius);
+    background: var(--surface-2)
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239b95a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E")
+      no-repeat 12px center;
+    color: var(--text-primary);
     font-size: 14px;
+    font-family: var(--font-body);
+    transition: background-color 0.15s, border-color 0.15s;
+}
 
-    transition: 0.2s;
+#search::placeholder {
+    color: var(--text-muted);
 }
 
 #search:focus{
-    background: #252525;
-
-    box-shadow: 0 0 0 2px #3a3a3a;
+    background-color: var(--surface-3);
+    border-color: var(--accent);
 }
 
 #results{
     position: absolute;
-
     top: 52px;
     left: 0;
-
     width: 100%;
-
-    max-height: 350px;
-
+    max-height: 360px;
     overflow-y: auto;
-
-    background: #121212;
-
-    border-radius: 12px;
-
-    box-shadow: 0 5px 20px rgba(0,0,0,0.45);
-
+    background: var(--surface);
+    border: 1px solid var(--border-2);
+    border-radius: var(--radius);
+    padding: 4px;
+    box-shadow: var(--shadow-lg);
     z-index: 1000;
+}
+
+#results:empty {
+    display: none;
+}
+
+.anime-link {
+    text-decoration: none;
 }
 
 .anime-item{
     display: flex;
-
     align-items: center;
-
     gap: 12px;
-
-    padding: 10px;
-
+    padding: 8px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
-
-    transition: 0.2s;
+    transition: background 0.15s;
 }
 
 .anime-item:hover{
-    background: #252525;
+    background: var(--surface-2);
 }
 
 .anime-item img{
-    width: 55px;
-    height: 75px;
-
+    width: 46px;
+    height: 64px;
     object-fit: cover;
-
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
 }
 
 .anime-item h3{
-    color: white;
-
-    font-size: 14px;
-
+    font-family: var(--font-display);
+    color: var(--text-primary);
+    font-size: 13.5px;
+    font-weight: 600;
+    line-height: 1.3;
     margin: 0;
 }
 .anime-page {
   min-height: 100vh;
-  background: #0d0d0d;
-  color: white;
-  font-family: Inter, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
   overflow-x: hidden;
 }
 
@@ -350,7 +394,7 @@ body {
 
   animation: bannerSlide 20s infinite;
 
-  filter: brightness(0.45);
+  filter: brightness(0.4);
 }
 
 /* delay diferente para cada imagem */
@@ -379,7 +423,6 @@ body {
 
   0% {
     opacity: 0;
-    transform: scale(1.1);
   }
 
   5% {
@@ -396,7 +439,6 @@ body {
 
   100% {
     opacity: 0;
-    transform: scale(1);
   }
 }
 
@@ -408,8 +450,8 @@ body {
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,.3),
-    rgba(13,13,13,1)
+    rgba(10, 9, 13, 0.35),
+    var(--bg)
   );
 }
 
@@ -430,7 +472,7 @@ body {
 
 .anime-poster img {
   width: 320px;
-  border-radius: 20px;
+  border-radius: var(--radius-lg);
 
   box-shadow:
     0 10px 40px rgba(0,0,0,.5);
@@ -443,7 +485,11 @@ body {
 }
 
 .anime-info h1 {
-  font-size: 4rem;
+  font-family: var(--font-display);
+  font-size: 3.4rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
   margin-bottom: 20px;
 }
 
@@ -452,15 +498,30 @@ body {
 .anime-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 10px;
   margin-bottom: 25px;
 }
 
 .anime-meta span {
-  background: #181818;
-  padding: 10px 18px;
-  border-radius: 999px;
-  font-size: .95rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  font-size: .9rem;
+  color: var(--text-primary);
+}
+
+.anime-meta .meta-label {
+  font-family: var(--font-display);
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-right: 4px;
 }
 
 /* GENEROS */
@@ -468,25 +529,28 @@ body {
 .genres {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
   margin-bottom: 30px;
 }
 
 .genre {
-  background: #e63946;
-  padding: 8px 16px;
-  border-radius: 999px;
-  font-size: .9rem;
-  font-weight: 600;
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  border-radius: var(--radius);
+  font-size: .82rem;
+  font-weight: 500;
 }
 
 /* SINOPSE */
 
 .synopsis {
-  line-height: 1.9;
-  color: #cfcfcf;
+  line-height: 1.8;
+  color: var(--text-secondary);
   margin-bottom: 40px;
   font-size: 1rem;
+  max-width: 70ch;
 }
 
 /* DETAILS */
@@ -494,31 +558,34 @@ body {
 .details {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
-  gap: 20px;
+  gap: 14px;
 }
 
 .detail-card {
-  background: #151515;
-  border: 1px solid #222;
-  padding: 20px;
-  border-radius: 16px;
-
-  transition: .3s;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 18px;
+  border-radius: var(--radius);
+  transition: border-color 0.15s;
 }
 
 .detail-card:hover {
-  transform: translateY(-5px);
-  border-color: #e63946;
+  border-color: var(--border-2);
 }
 
 .detail-card h3 {
-  color: #888;
-  margin-bottom: 10px;
-  font-size: .9rem;
+  font-family: var(--font-display);
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  font-size: .78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .detail-card p {
   font-size: 1rem;
+  color: var(--text-primary);
 }
 
 /* RESPONSIVO */
@@ -540,33 +607,106 @@ body {
 
 }
 
-/* ─── PERFIL / WATCHLIST ──────────────────── */
+/* PERFIL / WATCHLIST */
 
-.perfil, .watchlist {
-  padding: 2rem;
+.perfil {
+  padding: 0.5rem 0 1.5rem;
+}
+
+.watchlist {
+  padding: 0 0 1.5rem;
+}
+
+.perfil h1,
+.watchlist h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--accent);
+  margin-bottom: 1rem;
+}
+
+.perfil h1 {
+  font-size: 1.6rem;
+}
+
+.watchlist h2 {
+  font-size: 1.3rem;
+  margin-top: 1.5rem;
 }
 
 .mal-card {
-  background: var(--surface-2);
-  border: 1px solid var(--border-2);
-  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
   padding: 1.2rem;
   margin-top: 1rem;
-  max-width: 480px;
+  max-width: 560px;
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
   align-items: flex-start;
 }
 
+.mal-profile {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.mal-avatar {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-2);
+  flex-shrink: 0;
+}
+
+.mal-profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  align-items: flex-start;
+}
+
+.mal-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.mal-stats span {
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius);
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.mal-stats b {
+  color: var(--text-primary);
+  font-family: var(--font-display);
+}
+
 .mal-btn {
   background: var(--accent);
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius);
   padding: 0.5rem 1rem;
+  font-family: var(--font-display);
   font-weight: 600;
   cursor: pointer;
+  transition: background 0.15s;
+}
+
+.mal-btn:not(.ghost):hover {
+  background: var(--accent-strong);
 }
 
 .mal-btn.ghost {
@@ -580,16 +720,99 @@ body {
   cursor: default;
 }
 
-.card .tag {
-  display: inline-block;
-  font-size: 0.75rem;
-  color: var(--accent);
-  margin: 0.3rem 0;
+/* CARDS DA WATCHLIST */
+.wl-card {
+  display: flex;
+  flex-direction: column;
 }
 
-.card .remove {
+.wl-poster {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transition: border-color 0.15s;
+}
+
+.wl-card:hover .wl-poster {
+  border-color: var(--accent);
+}
+
+.wl-poster img {
   width: 100%;
-  margin-top: 0.4rem;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  display: block;
+}
+
+.wl-status {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  padding: 3px 8px;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: rgba(10, 9, 13, 0.78);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-sm);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.wl-remove {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  line-height: 1;
+  color: #fff;
+  background: rgba(10, 9, 13, 0.78);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, background 0.15s, border-color 0.15s;
+}
+
+.wl-poster:hover .wl-remove,
+.wl-remove:focus-visible {
+  opacity: 1;
+}
+
+.wl-remove:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.wl-remove:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.wl-title {
+  font-family: var(--font-display);
+  padding: 0.5rem 0.1rem 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 0.15s;
+}
+
+.wl-title:hover {
+  color: var(--accent);
 }
 
 .watchlist-box {
@@ -599,21 +822,22 @@ body {
   gap: 0.6rem;
   margin-top: 1.5rem;
   padding: 1rem;
-  background: var(--surface-2);
-  border: 1px solid var(--border-2);
-  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
 }
 
 .watchlist-box h3 {
   width: 100%;
+  font-family: var(--font-display);
 }
 
 .watchlist-box select,
 .watchlist-box input {
-  background: var(--surface);
+  background: var(--surface-2);
   border: 1px solid var(--border-2);
   color: var(--text-primary);
-  border-radius: 8px;
+  border-radius: var(--radius);
   padding: 0.5rem;
 }
 
@@ -625,13 +849,14 @@ body {
   color: var(--accent);
   font-size: 0.85rem;
 }
-/* ===== Player de episódios ===== */
+/* PLAYER DE EPISÓDIOS */
 .player-box {
   margin-top: 1.5rem;
   width: 100%;
 }
 
 .player-box h3 {
+  font-family: var(--font-display);
   margin-bottom: 0.75rem;
 }
 
@@ -652,8 +877,9 @@ body {
   background: var(--surface-2);
   border: 1px solid var(--border-2);
   color: var(--text-primary);
-  border-radius: 8px;
+  border-radius: var(--radius);
   padding: 0.5rem 0;
+  font-family: var(--font-display);
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
 }
@@ -667,12 +893,13 @@ body {
   border-color: var(--accent);
 }
 
-/* ===== Controles de episódios (faixas / ir para) ===== */
+/* CONTROLES DE EPISÓDIOS */
 #anime-player {
   width: 100%;
   max-width: 900px;
   background: #000;
-  border-radius: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
   display: block;
 }
 
@@ -694,7 +921,7 @@ body {
   background: var(--surface-2);
   border: 1px solid var(--border-2);
   color: var(--text-primary);
-  border-radius: 8px;
+  border-radius: var(--radius);
   padding: 0.4rem 0.5rem;
 }
 
@@ -702,7 +929,48 @@ body {
   width: 90px;
 }
 
-/* o atributo hidden tem que vencer o display:flex acima */
 .ep-controls[hidden] {
   display: none;
+}
+
+/* MODAL DE CONFIRMAÇÃO */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 380px;
+}
+
+.modal h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  margin-bottom: 0.6rem;
+}
+
+.modal-msg {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 1.2rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
 }

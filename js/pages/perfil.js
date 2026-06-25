@@ -72,9 +72,25 @@ export async function perfil() {
     return;
   }
 
+  const st = status.mal_statistics;
+  const stats = st
+    ? `
+      <div class="mal-stats">
+        <span><b>${st.num_items_completed ?? 0}</b> completos</span>
+        <span><b>${st.num_episodes ?? 0}</b> episódios</span>
+        <span><b>${st.num_days ?? 0}</b> dias</span>
+      </div>`
+    : "";
+
   card.innerHTML = `
-    <p>Conectado como <strong>${status.mal_username || "conta MAL"}</strong></p>
-    <button id="disconnect" class="mal-btn ghost">Desconectar</button>`;
+    <div class="mal-profile">
+      ${status.mal_picture ? `<img class="mal-avatar" src="${status.mal_picture}" alt="">` : ""}
+      <div class="mal-profile-info">
+        <p>Conectado como <strong>${status.mal_username || "conta MAL"}</strong></p>
+        ${stats}
+        <button id="disconnect" class="mal-btn ghost">Desconectar</button>
+      </div>
+    </div>`;
   document.getElementById("disconnect").addEventListener("click", async () => {
     await disconnectMal();
     perfil();
@@ -86,15 +102,55 @@ export async function perfil() {
 function cardItem(item) {
   const node = item.node;
   const st = item.list_status?.status;
+  const label = STATUS_LABELS[st] || st || "";
+  const img = node.main_picture?.medium
+    ? `<img src="${node.main_picture.medium}" alt="${node.title}">`
+    : "";
   return `
-    <div class="card">
-      <a href="#anime/${node.id}">
-        ${node.main_picture?.medium ? `<img src="${node.main_picture.medium}">` : ""}
-        <h3>${node.title}</h3>
-      </a>
-      <span class="tag">${STATUS_LABELS[st] || st || ""}</span>
-      <button class="mal-btn ghost remove" data-id="${node.id}">Remover</button>
+    <div class="wl-card">
+      <div class="wl-poster">
+        <a href="#anime/${node.id}">${img}</a>
+        ${label ? `<span class="wl-status">${label}</span>` : ""}
+        <button class="wl-remove" data-id="${node.id}" title="Remover da lista" aria-label="Remover">✕</button>
+      </div>
+      <a href="#anime/${node.id}" class="wl-title">${node.title}</a>
     </div>`;
+}
+
+function confirmarRemocao(titulo) {
+  return new Promise((resolve) => {
+    const overlay = document.createElement("div");
+    overlay.className = "modal-overlay";
+    overlay.innerHTML = `
+      <div class="modal" role="dialog" aria-modal="true">
+        <h3>Remover da lista?</h3>
+        <p class="modal-msg"></p>
+        <div class="modal-actions">
+          <button class="mal-btn ghost" data-acao="cancelar">Cancelar</button>
+          <button class="mal-btn" data-acao="confirmar">Remover</button>
+        </div>
+      </div>`;
+    overlay.querySelector(".modal-msg").textContent =
+      `"${titulo}" será removido da sua lista no MyAnimeList.`;
+    document.body.appendChild(overlay);
+
+    function fechar(resultado) {
+      overlay.remove();
+      document.removeEventListener("keydown", onKey);
+      resolve(resultado);
+    }
+    function onKey(e) {
+      if (e.key === "Escape") fechar(false);
+    }
+
+    overlay.addEventListener("click", (e) => {
+      const acao = e.target.dataset.acao;
+      if (e.target === overlay || acao === "cancelar") fechar(false);
+      if (acao === "confirmar") fechar(true);
+    });
+    document.addEventListener("keydown", onKey);
+    overlay.querySelector('[data-acao="cancelar"]').focus();
+  });
 }
 
 async function carregarListas() {
@@ -124,8 +180,14 @@ async function carregarListas() {
       </section>`;
   }).join("");
 
-  container.querySelectorAll(".remove").forEach((btn) => {
+  container.querySelectorAll(".wl-remove").forEach((btn) => {
     btn.addEventListener("click", async () => {
+      const titulo =
+        btn.closest(".wl-card")?.querySelector(".wl-title")?.textContent?.trim() ||
+        "este anime";
+      const ok = await confirmarRemocao(titulo);
+      if (!ok) return;
+
       btn.disabled = true;
       try {
         await removeFromList(btn.dataset.id);

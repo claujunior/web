@@ -48,7 +48,6 @@ export async function getStream(animeId, episode, lang = "sub") {
     return await response.json();
 }
 
-// URL do proxy de vídeo no backend (usada como src do <video>)
 export function streamProxyUrl(animeId, episode, lang = "sub") {
     return `${API_URL}/anime/${animeId}/episodes/${episode}/video?lang=${lang}`;
 }
