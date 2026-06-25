@@ -1,4 +1,5 @@
 import { authFetch } from "./http.js";
+import { nsfwEnabled } from "../config.js";
 
 export async function malStatus() {
   const response = await authFetch("/me/mal");
@@ -20,8 +21,9 @@ export async function disconnectMal() {
 }
 
 export async function getAnimelist(status) {
-  const path = status ? `/me/animelist?status=${status}` : "/me/animelist";
-  const response = await authFetch(path);
+  const params = new URLSearchParams({ nsfw: nsfwEnabled() });
+  if (status) params.set("status", status);
+  const response = await authFetch(`/me/animelist?${params}`);
   if (!response.ok) throw new Error("Erro ao buscar a lista");
   return response.json();
 }

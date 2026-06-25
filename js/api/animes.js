@@ -1,14 +1,14 @@
-import { API_URL } from '../config.js';
+import { API_URL, nsfwEnabled } from '../config.js';
 
 export async function mostrarAnimes1(page = 1) {
-    const response = await fetch(`${API_URL}/anime?page=${page}`);
+    const response = await fetch(`${API_URL}/anime?page=${page}&nsfw=${nsfwEnabled()}`);
 
     if (!response.ok) throw new Error("Erro ao buscar animes");
     const data = await response.json();
     return data.data;
 }
 export async function top10animes(page = 1) {
-    const response = await fetch(`${API_URL}/anime/topanimes`);
+    const response = await fetch(`${API_URL}/anime/topanimes?nsfw=${nsfwEnabled()}`);
 
     if (!response.ok) throw new Error("Erro ao buscar animes");
     const data = await response.json();
@@ -16,7 +16,7 @@ export async function top10animes(page = 1) {
 }
 
 export async function searchAnimes(pesquisa) {
-    const response = await fetch(`${API_URL}/anime/search?search=${pesquisa}`);
+    const response = await fetch(`${API_URL}/anime/search?search=${pesquisa}&nsfw=${nsfwEnabled()}`);
 
     if (!response.ok) throw new Error("Erro ao buscar animes");
     const data = await response.json();

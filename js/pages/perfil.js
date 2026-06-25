@@ -1,5 +1,6 @@
 import { malStatus, connectMal, disconnectMal, getAnimelist, removeFromList } from "../api/mal.js";
 import { logout } from "../api/http.js";
+import { initNsfwToggle } from "../ui/nsfw.js";
 
 const STATUS_LABELS = {
   watching: "Assistindo",
@@ -53,6 +54,7 @@ export async function perfil() {
 </main>`;
 
   document.getElementById("logout").addEventListener("click", logout);
+  initNsfwToggle();
 
   const card = document.getElementById("mal-card");
 

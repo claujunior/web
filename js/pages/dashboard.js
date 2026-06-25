@@ -1,6 +1,7 @@
 import { mostrarAnimes1, searchAnimes, top10animes } from "../api/animes.js";
 import { getUsers } from "../api/users.js";
 import { logout } from "../api/http.js";
+import { initNsfwToggle } from "../ui/nsfw.js";
 
 export async function paginaPrincipal(page = 1) {
   const logado = localStorage.getItem("token");
@@ -75,6 +76,8 @@ export async function paginaPrincipal(page = 1) {
       .join("")}
   </div>
 </main>`;
+
+  initNsfwToggle();
 
   const loginBtn = document.getElementById("login");
   if (loginBtn) {

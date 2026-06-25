@@ -1,6 +1,7 @@
 import { searchId, searchAnimes, getEpisodes, getStream, streamProxyUrl } from "../api/animes.js";
 import { logout } from "../api/http.js";
 import { malStatus, updateList } from "../api/mal.js";
+import { initNsfwToggle } from "../ui/nsfw.js";
 
 const CHUNK = 100;
 
@@ -183,6 +184,8 @@ export async function paginaAnime(animeId) {
     <div id="results"></div>
   </div>
 </header>`;
+
+  initNsfwToggle();
 
   const loginBtn = document.getElementById("login");
   if (loginBtn) {
